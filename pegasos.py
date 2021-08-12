@@ -161,7 +161,7 @@ class Pegasos_Kernelized_SVC_Batch(object):
                     alpha[i + 1, j] = alpha[i, j]
             sum_it = 0
             for j in range(m):
-                sum_it += alpha[i,j] * RBF(x=x[index],y=x[j]) * y[j]
+                sum_it += alpha[i,j] * K(index,x[j]) * y[j]
             sum_it *= y_it*eta
             if sum_it < 1:
                 alpha[i+1,index] = alpha[i,index]+1
@@ -173,7 +173,6 @@ class Pegasos_Kernelized_SVC_Batch(object):
         self.model['kernelFunction'] = self.kernel
         self.model['alpha'] = alpha[self.Max_Iter]
         alpha = alpha[Max_Iter]
-        print(K)
         print("Training Time --- %s seconds ---" % (time.time() - start_time))
         return alpha, losses[1:]
 
