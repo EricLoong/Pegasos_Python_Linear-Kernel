@@ -6,6 +6,7 @@ import numpy as np
 from sklearn.metrics.pairwise import pairwise_kernels
 import random
 
+# trivial linearly seperable dataset
 X, Y = make_classification(n_classes=2, n_samples=400, n_clusters_per_class=1, random_state=120, n_features=2,
                            n_informative=2, n_redundant=0)
 Y[Y == 0] = -1
@@ -15,7 +16,7 @@ plt.scatter(X[:, 0], X[:, 1], c=Y)
 
 class Pegasos_Linear_SVC():
 
-    def __init__(self, C=10):
+    def __init__(self, C=1.0):
         self.C = C
         self.W = 0
         self.b = 0
@@ -75,7 +76,7 @@ class Pegasos_Linear_SVC():
         return result
 
 
-def RBF(x,y,sigma = 5):
+def RBF(x,y,sigma = 10):
     above = np.linalg.norm(x-y)**2
     below = 2*(sigma**2)
     result = np.exp(-above/below)
@@ -188,6 +189,7 @@ class Pegasos_Kernelized_SVC_Batch(object):
         for i in range(n):
             decision = 0
             for j in range(m):
+              # if use other kernel function, you should change the RBF
                 decision += alpha[j] *train_y[j] * RBF(train_x[j].reshape(-1,1), x[i].reshape(-1,1))
             if decision < 0:
                 prediction = -1
@@ -197,7 +199,7 @@ class Pegasos_Kernelized_SVC_Batch(object):
         return pred
    
   
-####Test Part
+####Simple Test Part
 import time
 start_time = time.time()
 mySVM = Pegasos_Linear_SVC()
